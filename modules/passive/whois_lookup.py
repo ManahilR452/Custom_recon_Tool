@@ -41,4 +41,3 @@ def run(domain, logger=None):
         else:
             print(f"WHOIS lookup failed: {e}")
         return {}
-
