@@ -51,7 +51,13 @@ def main():
 
     if args.banner:
         print(Fore.CYAN + Style.BRIGHT + "\n--- Starting Banner Grabbing ---\n")
-        data['banners'] = banner_grab.run(target, data.get('open_ports', []), logger=log)
+        open_ports = data.get('open_ports', [])
+        if not open_ports:
+            print(Fore.YELLOW + "Warning: No open ports available. Please run portscan before banner grabbing.")
+        else:
+            # Extract only port numbers if open_ports contains (port, service) tuples
+            port_numbers = [port if isinstance(port, int) else port[0] for port in open_ports]
+            data['banners'] = banner_grab.run(target, port_numbers, logger=log)
 
     if args.tech:
         print(Fore.CYAN + Style.BRIGHT + "\n--- Starting Technology Detection ---\n")
@@ -61,7 +67,7 @@ def main():
         print(Fore.WHITE + Style.BRIGHT + "\n--- Generating Report ---\n")
         reporting.generate_txt_report(target, data)
         reporting.generate_json_report(target, data)
-        log.success("Reports (TXT & JSON) generated successfully.")
+        log.info("Reports (TXT & JSON) generated successfully.")
 
 if __name__ == '__main__':
     main()

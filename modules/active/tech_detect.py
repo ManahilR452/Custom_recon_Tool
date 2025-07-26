@@ -1,27 +1,21 @@
 import requests
 
-def run(domain, logger=None):
-    if logger:
-        logger.info("Starting Technology Detection...")
+REQUEST_TIMEOUT = 5  # seconds
 
-    technologies = []
-
+def run(target, logger=None):
     try:
-        response = requests.get(f"http://{domain}", timeout=5)
-        server = response.headers.get('Server', 'Unknown')
-        x_powered_by = response.headers.get('X-Powered-By', 'Unknown')
-        content_type = response.headers.get('Content-Type', 'Unknown')
-
-        technologies.append({
-            'Server': server,
-            'X-Powered-By': x_powered_by,
-            'Content-Type': content_type
-        })
-
+        response = requests.get(f'http://{target}', timeout=REQUEST_TIMEOUT)
+        headers = response.headers
         if logger:
-            logger.info(f"Technologies detected: {technologies}")
+            logger.info(f"Headers received: {headers}")
+
+        technologies = {
+            'Server': headers.get('Server', 'Unknown'),
+            'X-Powered-By': headers.get('X-Powered-By', 'Unknown'),
+            'Content-Type': headers.get('Content-Type', 'Unknown'),
+        }
+        return [technologies]
     except Exception as e:
         if logger:
-            logger.warning(f"Technology detection failed: {e}")
-
-    return technologies
+            logger.error(f"Technology detection failed: {e}")
+        return {}
