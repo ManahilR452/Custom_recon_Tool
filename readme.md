@@ -28,5 +28,21 @@ A professional, modular CLI-based reconnaissance tool for both passive and activ
 ## 🚀 Usage
 
 ### Install Dependencies
-```bash
+
 pip install -r requirements.txt
+
+### Example Usage:
+python main.py example.com --whois --dns --subdomains --portscan --banner --tech --report
+Command-Line Flags:
+- --whois → Perform WHOIS lookup
+- --dns → Perform DNS enumeration
+- --subdomains → Find subdomains
+- --portscan → Scan open ports
+- --banner → Grab service banners
+- --tech → Detect server technologies
+- --report → Generate reports (TXT + JSON)
+
+### Disclaimer
+This tool is developed strictly for educational and research purposes only.
+Unauthorized scanning or reconnaissance on systems you do not own or have explicit permission to test is illegal and unethical.
+Always ensure you have proper authorization before running any security assessments.
